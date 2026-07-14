@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Galaxy of Love 🌌</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@300;500;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Anuphan', sans-serif;
+            background-color: #050510;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- หน้าที่ 1: หน้าปลดล็อกวันครบรอบ --- */
+        #page-one {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1a0b2e 0%, #050510 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 1.2s ease;
+        }
+
+        .lock-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.2);
+        }
+
+        .lock-container h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #ec4899;
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        .date-input {
+            width: 80%;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 25px;
+            border: 2px solid #ec4899;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            text-align: center;
+            outline: none;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .btn-style {
+            background: linear-gradient(45deg, #ec4899, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn-style:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+        }
+
+        /* --- หน้าที่ 2: หน้ามินิเกมจิ๊กซอว์ --- */
+        #page-two {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #0e172a 0%, #050510 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.2s ease;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 133, 161, 0.2);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.1);
+            max-width: 360px;
+            width: 100%;
+        }
+
+        .game-container h2 {
+            font-size: 18px;
+            color: #ff85a1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255, 133, 161, 0.3);
+        }
+
+        .game-container p {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        /* ตารางจิ๊กซอว์ */
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 4px;
+            width: 270px;
+            height: 270px;
+            margin: 0 auto 20px auto;
+            border: 4px solid #ff85a1;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .puzzle-piece {
+            width: 100%;
+            height: 100%;
+            background-size: 270px 270px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.1s ease, border-color 0.2s;
+        }
+
+        .puzzle-piece.selected {
+            border: 2px solid #38bdf8;
+            transform: scale(0.95);
+            box-shadow: 0 0 10px #38bdf8;
+        }
+
+        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซี --- */
+        #page-three {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            z-index: 1;
+        }
+
+        /* ดวงดาวระยิบระยับเบื้องหลัง */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: transparent;
+            z-index: 1;
+        }
+
+        /* อวกาศสามมิติ (ระบบวงโคจร) ปรับขนาดให้อุ้มได้ 5 วงโคจรโดยไม่ล้น */
+        .solar-system {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            z-index: 2;
+            margin-top: auto;
+            margin-bottom: auto;
+            transform: scale(0.85); /* ย่อขนาดสัดส่วนลงเพื่อป้องกันล้นจอมือถือขนาดเล็ก */
+        }
+
+        @media (min-width: 450px) {
+            .solar-system {
+                transform: scale(1);
+            }
+        }
+
+        /* ดวงอาทิตย์กลางระบบสุริยะ (หัวใจสีชมพูเรืองแสง) */
+        .sun-heart {
+            width: 50px;
+            height: 50px;
+            background: #ff4d6d;
+            position: relative;
+            transform: rotate(-45deg);
+            box-shadow: 0 0 30px #ff4d6d, 0 0 50px #ff85a1;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .sun-heart:before, .sun-heart:after {
+            content: "";
+            width: 50px;
+            height: 50px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .sun-heart:before { top: -25px; left: 0; }
+        .sun-heart:after { left: 25px; top: 0; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9) rotate(-45deg); }
+            100% { transform: scale(1.1) rotate(-45deg); }
+        }
+
+        /* วงโคจรส่วนกลาง */
+        .orbit {
+            position: absolute;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation: orbit-rotate linear infinite;
+        }
+
+        /* รูปภาพโคจร (ดาวเคราะห์) */
+        .planet-photo {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2.5px solid #ff85a1;
+            object-fit: cover;
+            box-shadow: 0 0 12px rgba(255, 133, 161, 0.5);
+            animation: counter-rotate linear infinite; 
+        }
+
+        /* ================= วงโคจร 5 ชั้น ปรับระยะอย่างลงตัว ================= */
+        
+        /* ชั้นที่ 1 (ในสุด) */
+        #orbit1 {
+            width: 130px;
+            height: 130px;
+            animation-duration: 8s;
+        }
+        #p1 { top: -27.5px; left: 37.5px; animation-duration: 8s; }
+
+        /* ชั้นที่ 2 */
+        #orbit2 {
+            width: 210px;
+            height: 210px;
+            animation-duration: 12s;
+        }
+        #p2 { top: 77.5px; left: -27.5px; animation-duration: 12s; }
+
+        /* ชั้นที่ 3 (ระดับกลาง) */
+        #orbit3 {
+            width: 290px;
+            height: 290px;
+            animation-duration: 16s;
+        }
+        #p3 { bottom: -27.5px; left: 117.5px; animation-duration: 16s; }
+
+        /* ชั้นที่ 4 (ใหม่!) */
+        #orbit4 {
+            width: 370px;
+            height: 370px;
+            animation-duration: 20s;
+        }
+        #p4 { top: 157.5px; right: -27.5px; animation-duration: 20s; }
+
+        /* ชั้นที่ 5 (ใหม่!) */
+        #orbit5 {
+            width: 450px;
+            height: 450px;
+            animation-duration: 24s;
+        }
+        #p5 { top: -27.5px; left: 197.5px; animation-duration: 24s; }
+
+        @keyframes orbit-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes counter-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        /* ส่วนแสดงข้อความด้านล่าง */
+        .message-box {
+            text-align: center;
+            z-index: 2;
+            max-width: 600px;
+            background: rgba(5, 5, 16, 0.75);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 105, 180, 0.3);
+            margin-top: 10px;
+        }
+
+        .message-box h1 {
+            font-size: 24px;
+            color: #ff85a1;
+            text-shadow: 0 0 10px rgba(255, 133, 161, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .message-box p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #e0e0ff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- เล่นเพลงในเบื้องหลัง -->
+    <audio id="bg-music" loop>
+        <source src="https://www.image2url.com/r2/default/audio/1784015462549-cd669e69-305a-4987-bad6-1afbd9d24379.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ================= หน้าที่ 1: วันครบรอบปลดล็อก ================= -->
+    <div id="page-one">
+        <div class="lock-container">
+            <h2>🌌 ป้อนรหัสผ่านนนน 🌌</h2>
+            <p style="font-size: 14px; color: #a1a1aa; margin-bottom: 15px;">(ใบ้ให้: วันครบรอบของเรา เช่น วันที่ 14 กุมภาพันธ์ ให้ใส่ 14/02)</p>
+            <input type="text" id="anniversary-date" class="date-input" placeholder="วว/ดด" maxlength="5">
+            <br>
+            <button class="btn-style" onclick="checkUnlock()">ใช่ มั้ยนะ.. 🔑</button>
+        </div>
+    </div>
+
+    <!-- ================= หน้าที่ 2: มินิเกมจิ๊กซอว์ ================= -->
+    <div id="page-two">
+        <div class="game-container">
+            <h2>🧩 มินิเกมจิ๊กซอว์ทดสอบความใส่ใจ 🧩</h2>
+            <p>ต่อจิ๊กซอว์รูปให้ถูกต้อง!😋 </p>
+            
+            <div class="puzzle-board" id="puzzle-board"></div>
+            
+            <button id="btn-next-page" class="btn-style hidden" onclick="goToPageThree()">ไปกันเลยยย 🚀</button>
+        </div>
+    </div>
+
+    <!-- ================= หน้าที่ 3: ห้วงอวกาศแสนโรแมนติก (5 วงโคจร) ================= -->
+    <div id="page-three">
+        <canvas class="stars" id="starsCanvas"></canvas>
+
+        <div class="solar-system">
+            <div class="sun-heart"></div>
+
+            <!-- วงโคจรที่ 1 -->
+            <div class="orbit" id="orbit1">
+                <img id="p1" class="planet-photo" src="https://secure-white-mqhovxxf.edgeone.dev/S__16171012.jpg" alt="Love 1">
+            </div>
+
+            <!-- วงโคจรที่ 2 -->
+            <div class="orbit" id="orbit2">
+                <img id="p2" class="planet-photo" src="https://chronic-blue-4mxm881n.edgeone.dev/S__16171016_0.jpg" alt="Love 2">
+            </div>
+
+            <!-- วงโคจรที่ 3 -->
+            <div class="orbit" id="orbit3">
+                <img id="p3" class="planet-photo" src="https://repulsive-crimson-xh02xsve.edgeone.dev/S__16171020_0.jpg" alt="Love 3">
+            </div>
+
+            <!-- วงโคจรที่ 4 (ใหม่! - เปลี่ยนลิงก์ภาพใน src="" ได้เลยครับ) -->
+            <div class="orbit" id="orbit4">
+                <img id="p4" class="planet-photo" src="https://neutral-lavender-hl1ii3zh.edgeone.dev/S__16171015_0.jpg" alt="Love 4">
+            </div>
+
+            <!-- วงโคจรที่ 5 (ใหม่! - เปลี่ยนลิงก์ภาพใน src="" ได้เลยครับ) -->
+            <div class="orbit" id="orbit5">
+                <img id="p5" class="planet-photo" src="https://unwilling-chocolate-ue8hswkp.edgeone.dev/S__16171013_0.jpg" alt="Love 5">
+            </div>
+        </div>
+
+        <!-- กล่องข้อความหวานๆ -->
+        <div class="message-box">
+            <h1>Happy Anniversary 1 Year ! ✨</h1>
+            <p id="space-text">"ถ้าถามว่ารักแค่ไหน ให้เอาความประสาทคูณด้วยร้อย <br> รักนะ อยู่ด้วยกันไปนานๆน๊าา ❤"</p>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_DATE = "26/07"; 
+        const PUZZLE_IMG = "https://secure-white-mqhovxxf.edgeone.dev/S__16171012.jpg"; 
+
+        let pieces = [];
+        let selectedPiece = null;
+        const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+        function checkUnlock() {
+            const userInput = document.getElementById('anniversary-date').value.trim();
+            const music = document.getElementById('bg-music');
+
+            if (userInput === CORRECT_DATE) {
+                music.play().catch(error => {
+                    console.log("ต้องการการอนุญาตเสียง: ", error);
+                });
+
+                const pageOne = document.getElementById('page-one');
+                pageOne.style.opacity = '0';
+                
+                setTimeout(() => {
+                    pageOne.classList.add('hidden');
+                    
+                    const pageTwo = document.getElementById('page-two');
+                    pageTwo.style.opacity = '1';
+                    pageTwo.style.pointerEvents = 'auto';
+                    
+                    initPuzzle();
+                }, 1200);
+
+            } else {
+                alert("❌ ง่า รหัสผ่านไม่ถูกต้อง ลืมวันใช่ไหมไอ้อ้วน!! 🥺");
+            }
+        }
+
+        function initPuzzle() {
+            const board = document.getElementById('puzzle-board');
+            board.innerHTML = '';
+            
+            pieces = [...correctOrder];
+            do {
+                pieces.sort(() => Math.random() - 0.5);
+            } while (isFinished()); 
+
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const board = document.getElementById('puzzle-board');
+            board.innerHTML = '';
+
+            pieces.forEach((pieceIndex, currentPos) => {
+                const cell = document.createElement('div');
+                cell.classList.add('puzzle-piece');
+                cell.style.backgroundImage = `url('${PUZZLE_IMG}')`;
+
+                const x = (pieceIndex % 3) * 90;
+                const y = Math.floor(pieceIndex / 3) * 90;
+                cell.style.backgroundPosition = `-${x}px -${y}px`;
+                cell.dataset.index = currentPos;
+
+                cell.addEventListener('click', () => {
+                    handlePieceClick(currentPos);
+                });
+
+                board.appendChild(cell);
+            });
+        }
+
+        function handlePieceClick(index) {
+            const cells = document.querySelectorAll('.puzzle-piece');
+
+            if (selectedPiece === null) {
+                selectedPiece = index;
+                cells[index].classList.add('selected');
+            } else {
+                const temp = pieces[selectedPiece];
+                pieces[selectedPiece] = pieces[index];
+                pieces[index] = temp;
+
+                cells[selectedPiece].classList.remove('selected');
+                selectedPiece = null;
+
+                renderBoard();
+
+                if (isFinished()) {
+                    setTimeout(() => {
+                        alert("เย้! เก่งมาก ต่อจิ๊กซอว์สำเร็จแล้วจ้า ❤️");
+                        document.getElementById('btn-next-page').classList.remove('hidden');
+                        document.querySelectorAll('.puzzle-piece').forEach(cell => {
+                            cell.style.borderColor = '#ff85a1';
+                            cell.style.cursor = 'default';
+                        });
+                    }, 300);
+                }
+            }
+        }
+
+        function isFinished() {
+            return pieces.every((val, index) => val === correctOrder[index]);
+        }
+
+        function goToPageThree() {
+            const pageTwo = document.getElementById('page-two');
+            pageTwo.style.opacity = '0';
+            pageTwo.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                pageTwo.classList.add('hidden');
+
+                const pageThree = document.getElementById('page-three');
+                pageThree.style.opacity = '1';
+                pageThree.style.pointerEvents = 'auto';
+
+                initStars();
+            }, 1200);
+        }
+
+        function initStars() {
+            const canvas = document.getElementById('starsCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const starsArray = [];
+            for (let i = 0; i < 100; i++) {
+                starsArray.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.4
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffffff';
+                starsArray.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    star.y += star.speed;
+                    if (star.y > canvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * canvas.width;
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('starsCanvas');
+            if (canvas && !document.getElementById('page-three').classList.contains('hidden')) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+    </script>
+</body>
+</html>
