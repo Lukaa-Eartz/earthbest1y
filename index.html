@@ -160,14 +160,14 @@
             box-shadow: 0 0 10px #38bdf8;
         }
 
-        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซี --- */
+        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซีแบบใหม่ --- */
         #page-three {
             position: relative;
             width: 100vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end; /* ดันเนื้อหาไปอยู่ด้านล่างอย่างเป็นระเบียบ */
             align-items: center;
             padding: 20px 10px;
             opacity: 0;
@@ -176,7 +176,7 @@
             z-index: 1;
         }
 
-        .stars {
+        .galaxy-canvas {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -186,123 +186,86 @@
             z-index: 1;
         }
 
-        .solar-system {
-            position: relative;
-            width: 320px;
-            height: 320px;
+        /* คอนเทนเนอร์ระบบดึงรูปภาพกลับมาอยู่ตรงกลางรอบกาแล็กซีและหัวใจ */
+        .galaxy-system {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* รูปภาพดาวเคราะห์ที่จะโคจรรอบศูนย์กลาง */
+        .planet-container {
+            position: absolute;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            z-index: 2;
-            margin-top: auto;
-            margin-bottom: auto;
-            transform: scale(0.72);
-        }
-
-        @media (min-width: 450px) {
-            .solar-system {
-                transform: scale(0.85);
-            }
-        }
-
-        .sun-heart {
-            width: 50px;
-            height: 50px;
-            background: #ff4d6d;
-            position: relative;
-            transform: rotate(-45deg);
-            box-shadow: 0 0 30px #ff4d6d, 0 0 50px #ff85a1;
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        .sun-heart:before, .sun-heart:after {
-            content: "";
-            width: 50px;
-            height: 50px;
-            background: #ff4d6d;
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        .sun-heart:before { top: -25px; left: 0; }
-        .sun-heart:after { left: 25px; top: 0; }
-
-        @keyframes pulse {
-            0% { transform: scale(0.9) rotate(-45deg); }
-            100% { transform: scale(1.1) rotate(-45deg); }
-        }
-
-        /* วงโคจรส่วนกลาง - [แก้ไข!] ใส่ pointer-events: none เพื่อไม่ให้แผ่นวงโคจรซ้อนทับและบังการคลิก */
-        .orbit {
-            position: absolute;
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            transform-style: preserve-3d;
-            animation: orbit-rotate linear infinite;
-            pointer-events: none; 
-        }
-
-        /* รูปภาพโคจร (ดาวเคราะห์) - [แก้ไข!] ใส่ pointer-events: auto ทะลุเลเยอร์วงโคจรให้คลิกได้ครบทุกดวง */
-        .planet-photo {
-            position: absolute;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: 2.5px solid #ff85a1;
-            object-fit: cover;
-            box-shadow: 0 0 12px rgba(255, 133, 161, 0.5);
-            animation: counter-rotate linear infinite; 
+            justify-content: center;
             cursor: pointer;
-            pointer-events: auto; 
-            transition: transform 0.2s, box-shadow 0.2s;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+            will-change: left, top, transform;
         }
 
-        .planet-photo:hover {
-            transform: scale(1.15) !important;
-            box-shadow: 0 0 18px #ff4d6d;
+        .planet-container img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid #ff85a1;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(255, 133, 161, 0.7);
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
         }
 
-        /* ================= วงโคจร 5 ชั้น ================= */
-        #orbit1 { width: 130px; height: 130px; animation-duration: 8s; }
-        #p1 { top: -27.5px; left: 37.5px; animation-duration: 8s; }
-
-        #orbit2 { width: 210px; height: 210px; animation-duration: 12s; }
-        #p2 { top: 77.5px; left: -27.5px; animation-duration: 12s; }
-
-        #orbit3 { width: 290px; height: 290px; animation-duration: 16s; }
-        #p3 { bottom: -27.5px; left: 117.5px; animation-duration: 16s; }
-
-        #orbit4 { width: 370px; height: 370px; animation-duration: 20s; }
-        #p4 { top: 157.5px; right: -27.5px; animation-duration: 20s; }
-
-        #orbit5 { width: 450px; height: 450px; animation-duration: 24s; }
-        #p5 { top: -27.5px; left: 197.5px; animation-duration: 24s; }
-
-        @keyframes orbit-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .planet-container:hover img {
+            border-color: #ff4d6d;
+            box-shadow: 0 0 25px #ff4d6d;
+            transform: scale(1.15);
         }
 
-        @keyframes counter-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-
-        /* ================= กล่องตัวเลขเวลาเคียงข้างกัน ================= */
-        .timer-container {
-            z-index: 2;
+        /* ส่วนแสดงข้อความอวยพร */
+        .message-box {
             text-align: center;
-            background: rgba(255, 255, 255, 0.03);
+            z-index: 3;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(5, 5, 16, 0.85);
+            padding: 15px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 105, 180, 0.3);
+            margin-bottom: 15px; /* เว้นระยะจากข้อความลงไปหาปุ่มนับเวลา */
+        }
+
+        .message-box h1 {
+            font-size: 22px;
+            color: #ff85a1;
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .message-box p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #e0e0ff;
+        }
+
+        /* ================= กล่องตัวเลขเวลา (ย้ายกลับมาอยู่ด้านล่างสุด) ================= */
+        .timer-container {
+            z-index: 3;
+            text-align: center;
+            background: rgba(5, 5, 16, 0.8);
             border: 1px solid rgba(255, 133, 161, 0.2);
             border-radius: 15px;
             padding: 12px 20px;
             backdrop-filter: blur(8px);
-            margin: 15px 0;
             box-shadow: 0 0 15px rgba(255, 77, 109, 0.15);
             width: 90%;
             max-width: 450px;
+            margin-bottom: 20px; /* ระยะห่างจากขอบด้านล่างสุดของจอ */
         }
 
         .timer-title {
@@ -349,42 +312,17 @@
             padding-bottom: 12px;
         }
 
-        /* ส่วนแสดงข้อความด้านล่าง */
-        .message-box {
-            text-align: center;
-            z-index: 2;
-            max-width: 600px;
-            background: rgba(5, 5, 16, 0.75);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
-            border-top: 1px solid rgba(255, 105, 180, 0.3);
-            margin-top: 10px;
-        }
-
-        .message-box h1 {
-            font-size: 24px;
-            color: #ff85a1;
-            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
-            margin-bottom: 10px;
-        }
-
-        .message-box p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #e0e0ff;
-        }
-
         /* ================= ป๊อปอัปขยายรูปภาพ (Modal Zoom) ================= */
         .image-modal {
             display: flex;
+            flex-direction: column;
             position: fixed;
             z-index: 999;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(5, 5, 16, 0.9);
+            background-color: rgba(5, 5, 16, 0.92);
             justify-content: center;
             align-items: center;
             opacity: 0;
@@ -399,7 +337,7 @@
 
         .modal-content {
             max-width: 85%;
-            max-height: 75vh;
+            max-height: 65vh;
             border-radius: 15px;
             border: 3px solid #ff85a1;
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.8);
@@ -408,8 +346,29 @@
             object-fit: contain;
         }
 
+        .modal-caption {
+            color: #ffffff;
+            font-size: 16px;
+            margin-top: 20px;
+            background: rgba(255, 77, 109, 0.2);
+            padding: 10px 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 133, 161, 0.4);
+            text-align: center;
+            max-width: 80%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
         .image-modal.show .modal-content {
             transform: scale(1);
+        }
+
+        .image-modal.show .modal-caption {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         .close-btn {
@@ -463,40 +422,21 @@
         </div>
     </div>
 
-    <!-- ================= หน้าที่ 3: ห้วงอวกาศแสนโรแมนติก (5 วงโคจร) ================= -->
+    <!-- ================= หน้าที่ 3: ห้วงอวกาศกาแล็กซีทางช้างเผือกก้นหอย 3D ================= -->
     <div id="page-three">
-        <canvas class="stars" id="starsCanvas"></canvas>
+        <!-- แคนวาสสำหรับเรนเดอร์ละอองเกลียวกาแล็กซี่ทางช้างเผือก และหัวใจอนุภาคพ่นขึ้นด้านบน -->
+        <canvas class="galaxy-canvas" id="galaxyCanvas"></canvas>
 
-        <div class="solar-system">
-            <div class="sun-heart"></div>
+        <!-- ระบบรูปภาพที่จะโคจรรอบศูนย์กลางเกลียวกาแล็กซี -->
+        <div class="galaxy-system" id="galaxySystem"></div>
 
-            <!-- วงโคจรที่ 1 -->
-            <div class="orbit" id="orbit1">
-                <img id="p1" class="planet-photo" src="https://secure-white-mqhovxxf.edgeone.dev/S__16171012.jpg" alt="Love 1">
-            </div>
-
-            <!-- วงโคจรที่ 2 -->
-            <div class="orbit" id="orbit2">
-                <img id="p2" class="planet-photo" src="https://chronic-blue-4mxm881n.edgeone.dev/S__16171016_0.jpg" alt="Love 2">
-            </div>
-
-            <!-- วงโคจรที่ 3 -->
-            <div class="orbit" id="orbit3">
-                <img id="p3" class="planet-photo" src="https://repulsive-crimson-xh02xsve.edgeone.dev/S__16171020_0.jpg" alt="Love 3">
-            </div>
-
-            <!-- วงโคจรที่ 4 -->
-            <div class="orbit" id="orbit4">
-                <img id="p4" class="planet-photo" src="https://neutral-lavender-hl1ii3zh.edgeone.dev/S__16171015_0.jpg" alt="Love 4">
-            </div>
-
-            <!-- วงโคจรที่ 5 -->
-            <div class="orbit" id="orbit5">
-                <img id="p5" class="planet-photo" src="https://unwilling-chocolate-ue8hswkp.edgeone.dev/S__16171013_0.jpg" alt="Love 5">
-            </div>
+        <!-- กล่องข้อความหวานๆ -->
+        <div class="message-box">
+            <h1>Happy Anniversary 1 Year ! ✨</h1>
+            <p id="space-text">"ถ้าถามว่ารักแค่ไหน ให้เอาความประสาทคูณด้วยร้อย <br> รักเบสท์นะ อยู่บอกรักกันไปทุกๆวันน๊าา ❤"</p>
         </div>
 
-        <!-- วางเวลาอยู่ระหว่าง กาแล็กซี และ คำอวยพร -->
+        <!-- กล่องตัวเลขเวลา (กลับมาอยู่ตำแหน่งล่างสุดใต้ข้อความแล้ว) -->
         <div class="timer-container">
             <div class="timer-title">⌛👇 ใช้เวลามาด้วยกันเท่าไหร่แล้วนะ?👇⌛</div>
             <div class="timer-display">
@@ -521,25 +461,36 @@
                 </div>
             </div>
         </div>
-
-        <!-- กล่องข้อความหวานๆ -->
-        <div class="message-box">
-            <h1>Happy Anniversary 1 Year ! ✨</h1>
-            <p id="space-text">"ถ้าถามว่ารักแค่ไหน ให้เอาความประสาทคูณด้วยร้อย <br> รักเบสท์นะ อยู่บอกรักกันไปทุกๆวันน๊าา ❤"</p>
-        </div>
     </div>
 
-    <!-- โครงสร้าง Modal สำหรับซูมขยายรูปภาพดาวเคราะห์ -->
+    <!-- โครงสร้าง Modal สำหรับซูมขยายรูปภาพดาวเคราะห์ พร้อมข้อความบรรยาย -->
     <div id="image-modal" class="image-modal" onclick="closeModal()">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="modal-img" alt="Zoomed Love Photo">
+        <div class="modal-caption" id="modal-caption">ข้อความเริ่มต้น</div>
     </div>
 
-    <script {nonce}>
+    <script>
         const CORRECT_DATE = "26/07"; 
         const PUZZLE_IMG = "https://secure-white-mqhovxxf.edgeone.dev/S__16171012.jpg"; 
 
         const START_DATE = new Date("2025-07-26T00:00:00").getTime();
+
+        // รายการรูปภาพทั้ง 12 ใบ
+        const PLANETS_DATA = [
+            { id: "p1", src: "https://blind-azure-tubzx2g9.edgeone.dev/CC003F75-F70D-4598-9D29-6A4A537370E2.jpg", msg: "ชอบรูปสุดเลยย เกาะสีชังสวยมาก 🥰" },
+            { id: "p2", src: "https://generous-sapphire-skrgh7gw.edgeone.dev/1C0ADD5F-2C64-4474-BB96-D4FB94A6ABE9.jpg", msg: "ไปดูหนังด้วยกันครั้งแรกกก 🎞" },
+            { id: "p3", src: "https://shaky-apricot-prxe9npm.edgeone.dev/1FB893C4-CC98-41DE-A7D7-F6B3C2E74639.jpg", msg: "ของขวัญชิ้นแรก ตั้งใจทำให้สุดๆ 🌻" },
+            { id: "p4", src: "https://radical-turquoise-pihnoz8h.edgeone.dev/81C67EEF-4659-48F6-BADD-0A8EE04D8755.jpg", msg: "รูปคู่รูปแรกเลย ☺" },
+            { id: "p5", src: "https://unwilling-chocolate-ue8hswkp.edgeone.dev/S__16171013_0.jpg", msg: "ถึงห้องพักแล้ว เตรียมตัวไปแง้นรอบเกาะกันน 🏍" },
+            { id: "p6", src: "https://bare-turquoise-wt4tfh1g.edgeone.dev/77179D60-E4F8-49E7-A3FF-CAD82B19B455.jpg", msg: "คายเบสท์คนนั้นออกมาให้หน่อยสิ 555" },
+            { id: "p7", src: "https://chronic-blue-4mxm881n.edgeone.dev/S__16171016_0.jpg", msg: "ไปดูหนังด้วยกันอีกแล้ววว ชอบรูปนี้มากๆเลย ✨" },
+            { id: "p8", src: "https://repulsive-crimson-xh02xsve.edgeone.dev/S__16171020_0.jpg", msg: "วันที่ประสบความสำเร็จ ดีใจที่มีอ้วนอยู่ด้วย💖" },
+            { id: "p9", src: "https://neutral-lavender-hl1ii3zh.edgeone.dev/S__16171015_0.jpg", msg: "เรียนที่เดียวกันสะด้วย แต่ตอนนั้นยังไม่เจอกันเลย😊" },
+            { id: "p10", src: "https://inner-aquamarine-xontqest.edgeone.dev/5B81A34A-4374-4526-99C0-8467807CA689.jpg", msg: "ไปขอนแก่นด้วยกันครั้งแรก แปลกใหม่มากกกก" },
+            { id: "p11", src: "https://faint-olive-miyps5wj.edgeone.dev/3D870637-35D6-4200-93F3-7DE4951C66F1.jpg", msg: "ลอยกระทงด้วยกันปีแรกกก 🌻" },
+            { id: "p12", src: "https://vocational-beige-ttwhy62d.edgeone.dev/22962F48-8694-49CD-AA6D-A90D6838524A.jpg", msg: "ไปคาเฟ่ด้วยกันครั้งแรก ชอบมากๆ ทะเลาะกับแกะด้วย 🤣" }
+        ];
 
         let pieces = [];
         let selectedPiece = null;
@@ -651,9 +602,8 @@
                 pageThree.style.opacity = '1';
                 pageThree.style.pointerEvents = 'auto';
 
-                initStars();
                 startLoveCounter();
-                setupPlanetClicks(); 
+                initGalaxyRenderer();
             }, 1200);
         }
 
@@ -679,66 +629,228 @@
             setInterval(updateTimer, 1000);
         }
 
-        function setupPlanetClicks() {
-            const planets = document.querySelectorAll('.planet-photo');
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
+        function initGalaxyRenderer() {
+            const canvas = document.getElementById('galaxyCanvas');
+            const ctx = canvas.getContext('2d');
+            const systemContainer = document.getElementById('galaxySystem');
 
-            planets.forEach(planet => {
-                planet.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
-                    modalImg.src = planet.src; 
-                    modal.classList.add('show'); 
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // 1. สร้างดาวเบื้องหลังแบบปกติ (100 ดวง)
+            const bgStars = [];
+            for (let i = 0; i < 100; i++) {
+                bgStars.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    size: Math.random() * 1.5,
+                    opacity: Math.random()
+                });
+            }
+
+            // 2. สร้างละอองเกลียวกาแล็กซี่ก้นหอย (1200 ดวง)
+            const galaxyDust = [];
+            const dustCount = 1200;
+            const spiralArms = 2;
+
+            for (let i = 0; i < dustCount; i++) {
+                const r = Math.pow(Math.random(), 2) * 260;
+                const armIndex = i % spiralArms;
+                const theta = (armIndex * (2 * Math.PI) / spiralArms) + (r * 0.018) + (Math.random() * 0.4); 
+                
+                galaxyDust.push({
+                    r: r,
+                    theta: theta,
+                    speed: 0.003 + (Math.random() * 0.002), 
+                    size: Math.random() * 1.5 + 0.3,
+                    color: i % 3 === 0 ? '#ff85a1' : (i % 3 === 1 ? '#e0e0ff' : '#ec4899'),
+                    alpha: Math.random() * 0.8 + 0.2
+                });
+            }
+
+            // 3. สร้างละอองหัวใจพ่นขึ้นด้านบน
+            const heartParticles = [];
+            function createHeartParticle() {
+                heartParticles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height * 0.45, // ปรับพิกัดเริ่มต้นใจกลางตามสมดุลใหม่
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: -Math.random() * 2.5 - 1.0, 
+                    size: Math.random() * 6 + 2,
+                    alpha: 1,
+                    decay: 0.008 + Math.random() * 0.008
+                });
+            }
+
+            // 4. สร้างอิลิเมนต์รูปภาพทั้ง 12 ใบให้หมุนรอบเกลียวกาแล็กซี่และหัวใจ
+            const planets = [];
+            systemContainer.innerHTML = ''; 
+
+            PLANETS_DATA.forEach((data, index) => {
+                const el = document.createElement('div');
+                el.className = 'planet-container';
+                el.innerHTML = `<img src="${data.src}" alt="${data.id}">`;
+                systemContainer.appendChild(el);
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const modal = document.getElementById('image-modal');
+                    const modalImg = document.getElementById('modal-img');
+                    const modalCaption = document.getElementById('modal-caption');
+
+                    modalImg.src = data.src;
+                    modalCaption.innerText = data.msg;
+                    modal.classList.add('show');
+                });
+
+                planets.push({
+                    element: el,
+                    angle: (index * (Math.PI * 2)) / 12,
+                    radiusX: 200,
+                    radiusY: 70,
+                    speed: 0.003
                 });
             });
+
+            // วาดรูปหัวใจสไตล์พาร์ติเคิลเต้นตามจังหวะ
+            function drawBeatingHeart(cx, cy, scale, t) {
+                ctx.save();
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = "#ff4d6d";
+                ctx.fillStyle = "rgba(255, 77, 109, 0.85)";
+                ctx.beginPath();
+                
+                const beat = 1 + Math.sin(t * 0.08) * 0.05;
+                const finalScale = scale * beat;
+
+                for (let angle = 0; angle < Math.PI * 2; angle += 0.01) {
+                    const x = 16 * Math.pow(Math.sin(angle), 3);
+                    const y = 13 * Math.cos(angle) - 5 * Math.cos(2*angle) - 2 * Math.cos(3*angle) - Math.cos(4*angle);
+                    
+                    const drawX = cx + x * finalScale;
+                    const drawY = cy - y * finalScale; 
+
+                    if (angle === 0) {
+                        ctx.moveTo(drawX, drawY);
+                    } else {
+                        ctx.lineTo(drawX, drawY);
+                    }
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            let animationTime = 0;
+
+            function animate() {
+                animationTime++;
+
+                ctx.fillStyle = '#050510';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height * 0.45; // ขยับระนาบหลักขึ้นด้านบนเล็กน้อยเพื่อหนีกล่องเวลาด้านล่าง
+
+                // --- 1. วาดดาวเบื้องหลัง ---
+                ctx.fillStyle = '#ffffff';
+                bgStars.forEach(star => {
+                    ctx.globalAlpha = star.opacity * (0.5 + Math.sin(animationTime * 0.02 + star.x) * 0.5); 
+                    ctx.fillRect(star.x, star.y, star.size, star.size);
+                });
+                ctx.globalAlpha = 1.0;
+
+                // --- 2. วาดฝุ่นเกลียวกาแล็กซี่ ---
+                galaxyDust.forEach(dust => {
+                    dust.theta += dust.speed; 
+                    
+                    const origX = dust.r * Math.cos(dust.theta);
+                    const origY = dust.r * Math.sin(dust.theta);
+
+                    const tiltAngle = 65 * Math.PI / 180;
+                    const rotX = origX;
+                    const rotY = origY * Math.cos(tiltAngle);
+
+                    const drawX = centerX + rotX;
+                    const drawY = centerY + rotY;
+
+                    const scale3d = (origY * Math.sin(tiltAngle) + 300) / 300;
+                    const currentSize = Math.max(0.1, dust.size * scale3d);
+
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, currentSize, 0, Math.PI * 2);
+                    ctx.fillStyle = dust.color;
+                    ctx.globalAlpha = dust.alpha * Math.min(1.0, scale3d);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1.0;
+
+                // --- 3. อัปเดตพาร์ติเคิลหัวใจลอยขึ้น ---
+                if (Math.random() < 0.6) {
+                    createHeartParticle();
+                }
+
+                for (let i = heartParticles.length - 1; i >= 0; i--) {
+                    const p = heartParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        heartParticles.splice(i, 1);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 133, 161, ${p.alpha})`;
+                        ctx.shadowBlur = 8;
+                        ctx.shadowColor = "#ff4d6d";
+                        ctx.fill();
+                        ctx.shadowBlur = 0; 
+                    }
+                }
+
+                // --- 4. วาดหัวใจเต้นขยับจังหวะ (ขยับความสูงให้ลอยอยู่เหนือเกลียวกาแล็กซี) ---
+                drawBeatingHeart(centerX, centerY - 130, 4.2, animationTime);
+
+                // --- 5. วาดและหมุนกลุ่มรูปภาพทั้ง 12 ใบ ---
+                planets.forEach(planet => {
+                    planet.angle += planet.speed;
+
+                    const rawX = planet.radiusX * Math.cos(planet.angle);
+                    const rawY = planet.radiusY * Math.sin(planet.angle);
+
+                    const drawX = centerX + rawX;
+                    const drawY = centerY + rawY;
+
+                    const maxRadiusY = planet.radiusY;
+                    const depthZ = (rawY + maxRadiusY) / (2 * maxRadiusY); 
+
+                    const sizeScale = 0.6 + (depthZ * 0.45);
+                    const brightness = 60 + Math.round(depthZ * 40);
+                    const zIndexVal = Math.round(depthZ * 100);
+
+                    const el = planet.element;
+                    el.style.left = `${drawX}px`;
+                    el.style.top = `${drawY}px`;
+                    el.style.transform = `translate(-50%, -50%) scale(${sizeScale})`;
+                    el.style.filter = `brightness(${brightness}%)`;
+                    el.style.zIndex = zIndexVal;
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
         }
 
         function closeModal() {
             const modal = document.getElementById('image-modal');
             modal.classList.remove('show'); 
         }
-
-        function initStars() {
-            const canvas = document.getElementById('starsCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const starsArray = [];
-            for (let i = 0; i < 100; i++) {
-                starsArray.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.4
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ffffff';
-                starsArray.forEach(star => {
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    star.y += star.speed;
-                    if (star.y > canvas.height) {
-                        star.y = 0;
-                        star.x = Math.random() * canvas.width;
-                    }
-                });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('starsCanvas');
-            if (canvas && !document.getElementById('page-three').classList.contains('hidden')) {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-        });
     </script>
 </body>
 </html>
