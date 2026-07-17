@@ -22,6 +22,39 @@
             position: relative;
         }
 
+        /* --- ปุ่มควบคุมเพลง --- */
+        #music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        #music-btn.playing {
+            animation: rotateMusic 4s linear infinite;
+            border-color: #ff85a1;
+            box-shadow: 0 0 15px rgba(255, 133, 161, 0.5);
+        }
+
+        @keyframes rotateMusic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* --- หน้าที่ 1: หน้าปลดล็อกวันครบรอบ --- */
         #page-one {
             position: fixed;
@@ -143,6 +176,7 @@
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.4);
             overflow: hidden;
+            position: relative;
         }
 
         .puzzle-piece {
@@ -151,7 +185,7 @@
             background-size: 270px 270px;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: transform 0.1s ease, border-color 0.2s;
+            transition: transform 0.1s ease, border-color 0.2s, box-shadow 0.2s;
         }
 
         .puzzle-piece.selected {
@@ -160,14 +194,58 @@
             box-shadow: 0 0 10px #38bdf8;
         }
 
-        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซีแบบใหม่ --- */
+        .hint-btn {
+            background: rgba(255, 133, 161, 0.15);
+            border: 1px solid #ff85a1;
+            color: #ff85a1;
+            padding: 8px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 15px;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: background 0.2s;
+        }
+
+        .hint-btn:active {
+            background: rgba(255, 133, 161, 0.4);
+        }
+
+        /* --- ฟีเจอร์ที่ 4: กล่องผลคะแนนมินิเกมจิ๊กซอว์ --- */
+        #score-board {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px dashed #ec4899;
+            border-radius: 15px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        #score-board h3 {
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        #score-board p {
+            font-size: 13px;
+            color: #ffd23f;
+            font-weight: bold;
+            margin-bottom: 0;
+            text-shadow: 0 0 5px rgba(255, 210, 63, 0.5);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซี --- */
         #page-three {
             position: relative;
             width: 100vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* ดันเนื้อหาไปอยู่ด้านล่างอย่างเป็นระเบียบ */
+            justify-content: flex-end;
             align-items: center;
             padding: 20px 10px;
             opacity: 0;
@@ -186,7 +264,6 @@
             z-index: 1;
         }
 
-        /* คอนเทนเนอร์ระบบดึงรูปภาพกลับมาอยู่ตรงกลางรอบกาแล็กซีและหัวใจ */
         .galaxy-system {
             position: absolute;
             width: 100%;
@@ -197,7 +274,6 @@
             pointer-events: none;
         }
 
-        /* รูปภาพดาวเคราะห์ที่จะโคจรรอบศูนย์กลาง */
         .planet-container {
             position: absolute;
             display: flex;
@@ -237,7 +313,7 @@
             border-radius: 15px;
             backdrop-filter: blur(5px);
             border-top: 1px solid rgba(255, 105, 180, 0.3);
-            margin-bottom: 15px; /* เว้นระยะจากข้อความลงไปหาปุ่มนับเวลา */
+            margin-bottom: 15px;
         }
 
         .message-box h1 {
@@ -253,7 +329,7 @@
             color: #e0e0ff;
         }
 
-        /* ================= กล่องตัวเลขเวลา (ย้ายกลับมาอยู่ด้านล่างสุด) ================= */
+        /* กล่องตัวเลขเวลา */
         .timer-container {
             z-index: 3;
             text-align: center;
@@ -265,7 +341,7 @@
             box-shadow: 0 0 15px rgba(255, 77, 109, 0.15);
             width: 90%;
             max-width: 450px;
-            margin-bottom: 20px; /* ระยะห่างจากขอบด้านล่างสุดของจอ */
+            margin-bottom: 20px;
         }
 
         .timer-title {
@@ -312,12 +388,173 @@
             padding-bottom: 12px;
         }
 
-        /* ================= ป๊อปอัปขยายรูปภาพ (Modal Zoom) ================= */
+        /* --- ฟีเจอร์ที่ 1: สไตล์กลุ่มดาวตกและการสุ่มเด้งข้อความบอกรัก --- */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(255,255,255,1), rgba(255,255,255,0));
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1));
+            z-index: 5;
+            cursor: pointer;
+            transform: rotate(-45deg);
+            pointer-events: auto;
+        }
+        .love-bubble {
+            position: fixed;
+            background: rgba(255, 133, 161, 0.9);
+            border: 1px solid #fff;
+            padding: 8px 15px;
+            border-radius: 15px;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1000;
+            animation: bubbleFloatUp 2.5s ease-out forwards;
+            box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+            white-space: nowrap;
+        }
+        @keyframes bubbleFloatUp {
+            0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+            15% { transform: translate(-50%, -20px) scale(1); opacity: 1; }
+            90% { opacity: 0.9; }
+            100% { transform: translate(-50%, -100px) scale(0.8); opacity: 0; }
+        }
+
+        /* --- ฟีเจอร์ที่ 2: สไตล์จดหมายลับ (Time Capsule) และคูปอง --- */
+        #capsule-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 999;
+            background: rgba(255, 77, 109, 0.2);
+            border: 1.5px solid rgba(255, 133, 161, 0.5);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            font-size: 20px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 133, 161, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #capsule-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+            animation: gentleHeartbeat 2s infinite;
+        }
+        @keyframes gentleHeartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 133, 161, 0.6); }
+        }
+
+        /* ป๊อปอัปจดหมายลับ */
+        .letter-modal {
+            display: flex;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 16, 0.85);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+        .letter-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .letter-paper {
+            background: #fff8f8;
+            color: #4a3e3d;
+            width: 100%;
+            max-width: 420px;
+            padding: 25px;
+            border-radius: 15px;
+            border: 4px solid #ffccd5;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(50px) scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            text-align: center;
+            position: relative;
+        }
+        .letter-modal.show .letter-paper {
+            transform: translateY(0) scale(1);
+        }
+        .letter-paper h2 {
+            color: #d90429;
+            font-size: 18px;
+            margin-bottom: 12px;
+            border-bottom: 1.5px dashed #ffccd5;
+            padding-bottom: 10px;
+        }
+        .letter-paper p {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: left;
+            text-indent: 20px;
+        }
+        /* คูปองแฟน */
+        .coupon-box {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            border: 2px dashed #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(255, 117, 140, 0.4);
+            margin: 15px 0;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .coupon-box::before, .coupon-box::after {
+            content: '';
+            position: absolute;
+            background: #fff8f8;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .coupon-box::before { left: -8px; }
+        .coupon-box::after { right: -8px; }
+        .coupon-title {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        .coupon-reward {
+            font-size: 15px;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .coupon-desc {
+            font-size: 10px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* --- ป๊อปอัปขยายรูปภาพ (Modal Zoom) --- */
         .image-modal {
             display: flex;
             flex-direction: column;
             position: fixed;
-            z-index: 999;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
@@ -387,6 +624,16 @@
             color: #ff85a1;
         }
 
+        .close-btn-dark {
+            color: #999;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+        .close-btn-dark:hover { color: #d90429; }
+
         .hidden {
             display: none !important;
         }
@@ -394,7 +641,8 @@
 </head>
 <body>
 
-    <!-- เล่นเพลงในเบื้องหลัง -->
+    <!-- ปุ่มควบคุมเพลงเล่นในพื้นหลัง -->
+    <button id="music-btn" onclick="toggleMusic()">🎵</button>
     <audio id="bg-music" loop>
         <source src="https://competent-blush-oedgdsio.edgeone.dev/นบหนง%20(From%20now%20on)%20-%20Billkin%20(cover)%20%20SERIOUS%20BACON.mp3" type="audio/mpeg">
     </audio>
@@ -414,29 +662,41 @@
     <div id="page-two">
         <div class="game-container">
             <h2>🧩 ทดสอบความใส่ใจ 🧩</h2>
-            <p>ต่อจิ๊กซอว์รูปให้ถูกต้อง!😋 </p>
+            <p style="margin-bottom: 10px;">ต่อจิ๊กซอว์รูปให้ถูกต้อง!😋 </p>
             
             <div class="puzzle-board" id="puzzle-board"></div>
+
+            <button class="hint-btn" 
+                    onmousedown="showHint(true)" 
+                    onmouseup="showHint(false)" 
+                    onmouseleave="showHint(false)"
+                    ontouchstart="showHint(true)" 
+                    ontouchend="showHint(false)">
+                กดค้างเพื่อดูรูปตัวอย่าง 👁️
+            </button>
             
-            <button id="btn-next-page" class="btn-style hidden" onclick="goToPageThree()">ไปกันเลยยย 🚀</button>
+            <!-- สถิติคะแนนที่จะโชว์เมื่อเกมเสร็จสิ้น -->
+            <div id="score-board" class="hidden">
+                <h3>🏆 รายงานระดับความใส่ใจ 🏆</h3>
+                <p id="score-time-label">เวลาที่ใช้: 0 วินาที</p>
+                <p id="score-rank" style="margin-top: 5px; color: #ff758c;"></p>
+            </div>
+
+            <br>
+            <button id="btn-next-page" class="btn-style hidden" style="margin-top: 15px;" onclick="goToPageThree()">ไปกันเลยยย 🚀</button>
         </div>
     </div>
 
-    <!-- ================= หน้าที่ 3: ห้วงอวกาศกาแล็กซีทางช้างเผือกก้นหอย 3D ================= -->
+    <!-- ================= หน้าที่ 3: ห้วงอวกาศกาแล็กซี ================= -->
     <div id="page-three">
-        <!-- แคนวาสสำหรับเรนเดอร์ละอองเกลียวกาแล็กซี่ทางช้างเผือก และหัวใจอนุภาคพ่นขึ้นด้านบน -->
         <canvas class="galaxy-canvas" id="galaxyCanvas"></canvas>
-
-        <!-- ระบบรูปภาพที่จะโคจรรอบศูนย์กลางเกลียวกาแล็กซี -->
         <div class="galaxy-system" id="galaxySystem"></div>
 
-        <!-- กล่องข้อความหวานๆ -->
         <div class="message-box">
-            <h1>Happy Anniversary 1 Year ! ✨</h1>
+            <h1 id="theme-greeting">Happy Anniversary 1 Year ! ✨</h1>
             <p id="space-text">"ถ้าถามว่ารักแค่ไหน ให้เอาความประสาทคูณด้วยร้อย <br> รักเบสท์นะ อยู่บอกรักกันไปทุกๆวันน๊าา ❤"</p>
         </div>
 
-        <!-- กล่องตัวเลขเวลา (กลับมาอยู่ตำแหน่งล่างสุดใต้ข้อความแล้ว) -->
         <div class="timer-container">
             <div class="timer-title">⌛👇 ใช้เวลามาด้วยกันเท่าไหร่แล้วนะ?👇⌛</div>
             <div class="timer-display">
@@ -463,22 +723,42 @@
         </div>
     </div>
 
-    <!-- โครงสร้าง Modal สำหรับซูมขยายรูปภาพดาวเคราะห์ พร้อมข้อความบรรยาย -->
+    <!-- ปุ่มจดหมายลับ (จะลอยมุมล่างซ้ายหน้า 3) -->
+    <button id="capsule-btn" onclick="openCapsule()">💌</button>
+
+    <!-- ป๊อปอัปจดหมายลับ คลี่กระดาษ -->
+    <div id="letter-modal" class="letter-modal" onclick="closeCapsule()">
+        <div class="letter-paper" onclick="event.stopPropagation()">
+            <span class="close-btn-dark" onclick="closeCapsule()">&times;</span>
+            <h2>💌 จดหมายรักถึงเบสท์ 🧸</h2>
+            <p>
+                เวลาผ่านไปไวมากๆ เลยนะอ้วน ขอบคุณสำหรับทุกๆ รอยยิ้ม และความน่ารักที่มีให้ในทุกๆวันนะ 🥰
+            </p>
+            
+            <div class="coupon-box" onclick="rollCoupon()">
+                <div class="coupon-title">🎫 คูปองแฟนสุดพิเศษ (แตะสุ่มใหม่)</div>
+                <div id="coupon-reward" class="coupon-reward">คูปอง: ตามใจแฟนสุดๆ 1 วันเต็ม 💖</div>
+                <div class="coupon-desc">✨ แคปหน้าจอนี้ไว้ แล้วนำมาแลกใช้ที่อ้วนได้เลย! ✨</div>
+            </div>
+            
+            <p style="font-size: 11px; color:#a1a1aa; text-align: center; margin-bottom:0;">(แตะที่คูปองเพื่อสุ่มของรางวัลใหม่ๆ ได้น๊าา)</p>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัปขยายรูปภาพ -->
     <div id="image-modal" class="image-modal" onclick="closeModal()">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="modal-img" alt="Zoomed Love Photo">
-        <div class="modal-caption" id="modal-caption">ข้อความเริ่มต้น</div>
+        <div class="modal-caption" id="modal-caption"></div>
     </div>
 
     <script>
         const CORRECT_DATE = "26/07"; 
-        const PUZZLE_IMG = "https://secure-white-mqhovxxf.edgeone.dev/S__16171012.jpg"; 
-
+        const PUZZLE_IMG = "https://blind-azure-tubzx2g9.edgeone.dev/CC003F75-F70D-4598-9D29-6A4A537370E2.jpg"; 
         const START_DATE = new Date("2025-07-26T00:00:00").getTime();
 
-        // รายการรูปภาพทั้ง 12 ใบ
         const PLANETS_DATA = [
-            { id: "p1", src: "https://blind-azure-tubzx2g9.edgeone.dev/CC003F75-F70D-4598-9D29-6A4A537370E2.jpg", msg: "ชอบรูปสุดเลยย เกาะสีชังสวยมาก 🥰" },
+            { id: "p1", src: "https://blind-azure-tubzx2g9.edgeone.dev/CC003F75-F70D-4598-9D29-6A4A537370E2.jpg", msg: "ชอบรูปนี้สุดเลยย เกาะสีชังสวยมาก 🥰" },
             { id: "p2", src: "https://generous-sapphire-skrgh7gw.edgeone.dev/1C0ADD5F-2C64-4474-BB96-D4FB94A6ABE9.jpg", msg: "ไปดูหนังด้วยกันครั้งแรกกก 🎞" },
             { id: "p3", src: "https://shaky-apricot-prxe9npm.edgeone.dev/1FB893C4-CC98-41DE-A7D7-F6B3C2E74639.jpg", msg: "ของขวัญชิ้นแรก ตั้งใจทำให้สุดๆ 🌻" },
             { id: "p4", src: "https://radical-turquoise-pihnoz8h.edgeone.dev/81C67EEF-4659-48F6-BADD-0A8EE04D8755.jpg", msg: "รูปคู่รูปแรกเลย ☺" },
@@ -492,42 +772,88 @@
             { id: "p12", src: "https://vocational-beige-ttwhy62d.edgeone.dev/22962F48-8694-49CD-AA6D-A90D6838524A.jpg", msg: "ไปคาเฟ่ด้วยกันครั้งแรก ชอบมากๆ ทะเลาะกับแกะด้วย 🤣" }
         ];
 
-        let pieces = [];
-        let selectedPiece = null;
-        const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+        // รายการคูปองพิเศษสำหรับสุ่มในจดหมายลับ
+        const COUPONS = [
+            "คูปอง: ตามใจเบสท์สุดๆ 1 วันเต็ม 💖",
+            "คูปอง: ป้อนหมูกระทะ/ชาบู ฟรี 1 มื้อใหญ่ 🐷",
+            "คูปอง: หยุดเถียงชั่วคราว (ใช้เมื่อกำลังจะทะเลาะกัน)🏳️",
+            "คูปอง: พาไปเที่ยว 1 วัน 💆‍♀ ",
+            "คูปอง: ดูหนังเรื่องอะไรก็ได้ที่แฟนอยากดู (จะไม่งอแง) 💖",
+            "คูปอง: แลกอ้อมกอดแน่นๆ 10 นาที",
+        ];
+
+        // ตรวจเช็คว่าเป็น Day Mode หรือ Night Mode อิงจากเวลาจริงบนเครื่อง (ฟีเจอร์ที่ 3)
+        function checkDayNightMode() {
+            const currentHour = new Date().getHours();
+            // ช่วงกลางวัน: 06:00 น. ถึง 18:00 น. (6 โมงเช้า ถึง 6 โมงเย็น)
+            const isDayMode = (currentHour >= 6 && currentHour < 18);
+            return isDayMode;
+        }
+
+        // 1. พรีโหลดรูปภาพ
+        const allImages = [PUZZLE_IMG, ...PLANETS_DATA.map(p => p.src)];
+        allImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+
+        // 2. ควบคุมเพลง
+        let isPlaying = false;
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-btn');
+            if (isPlaying) {
+                music.pause();
+                btn.classList.remove('playing');
+            } else {
+                music.play().catch(err => console.log("Music interaction required first.", err));
+                btn.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 3. ปลดล็อกและคำนวณสถิติจิ๊กซอว์ (ฟีเจอร์ที่ 4)
+        let puzzleStartTime = 0;
+        let puzzleEndTime = 0;
 
         function checkUnlock() {
             const userInput = document.getElementById('anniversary-date').value.trim();
-            const music = document.getElementById('bg-music');
-
             if (userInput === CORRECT_DATE) {
-                music.play().catch(error => {
-                    console.log("ต้องการการอนุญาตเสียง: ", error);
-                });
+                const music = document.getElementById('bg-music');
+                const btn = document.getElementById('music-btn');
+                music.play().then(() => {
+                    isPlaying = true;
+                    btn.classList.add('playing');
+                }).catch(() => {});
 
                 const pageOne = document.getElementById('page-one');
                 pageOne.style.opacity = '0';
                 
                 setTimeout(() => {
                     pageOne.classList.add('hidden');
-                    
                     const pageTwo = document.getElementById('page-two');
                     pageTwo.style.opacity = '1';
                     pageTwo.style.pointerEvents = 'auto';
                     
-                    initPuzzle();
+                    puzzleStartTime = Date.now(); // เริ่มจับเวลาต่อจิ๊กซอว์
+                    initPuzzle(); 
                 }, 1200);
-
             } else {
                 alert("❌ ง่า รหัสผ่านไม่ถูกต้อง ลืมวันใช่ไหมไอ้อ้วน!! 🥺");
             }
         }
 
+        // ระบบมินิเกมจิ๊กซอว์
+        let pieces = [];
+        let selectedPiece = null;
+        const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
         function initPuzzle() {
             const board = document.getElementById('puzzle-board');
             board.innerHTML = '';
-            
             pieces = [...correctOrder];
+            
             do {
                 pieces.sort(() => Math.random() - 0.5);
             } while (isFinished()); 
@@ -558,6 +884,7 @@
         }
 
         function handlePieceClick(index) {
+            if (isFinished()) return;
             const cells = document.querySelectorAll('.puzzle-piece');
 
             if (selectedPiece === null) {
@@ -574,8 +901,25 @@
                 renderBoard();
 
                 if (isFinished()) {
+                    puzzleEndTime = Date.now();
+                    const secondsUsed = Math.floor((puzzleEndTime - puzzleStartTime) / 1000);
+                    
+                    // แสดงผลคะแนน สถิติความใส่ใจ (ฟีเจอร์ที่ 4)
+                    let rank = "";
+                    if (secondsUsed <= 15) {
+                        rank = "แฟนดีเด่นอันดับหนึ่งของโลก 🥇 (เร็วปานสายฟ้า!)";
+                    } else if (secondsUsed <= 35) {
+                        rank = "แฟนสายใส่ใจระดับเทพพพ 🥈 (จำรูปเก่งจังเลยย)";
+                    } else {
+                        rank = "แฟนผู้น่ารักและมุ่งมั่น 🥉 (ตั้งใจต่อน่าเอ็นดูที่สุด)";
+                    }
+
                     setTimeout(() => {
-                        alert("เย้! เก่งมาก ต่อจิ๊กซอว์สำเร็จแล้วจ้า ❤️");
+                        const scoreBoard = document.getElementById('score-board');
+                        document.getElementById('score-time-label').innerText = `⏱️ คุณใช้เวลาต่อจิ๊กซอว์ไป: ${secondsUsed} วินาที`;
+                        document.getElementById('score-rank').innerText = `ระดับความใส่ใจ: ${rank}`;
+                        scoreBoard.classList.remove('hidden');
+
                         document.getElementById('btn-next-page').classList.remove('hidden');
                         document.querySelectorAll('.puzzle-piece').forEach(cell => {
                             cell.style.borderColor = '#ff85a1';
@@ -590,6 +934,25 @@
             return pieces.every((val, index) => val === correctOrder[index]);
         }
 
+        function showHint(show) {
+            const cells = document.querySelectorAll('.puzzle-piece');
+            cells.forEach((cell, currentPos) => {
+                if (show) {
+                    cell.style.backgroundImage = `url('${PUZZLE_IMG}')`;
+                    const correctIdx = correctOrder[currentPos];
+                    const x = (correctIdx % 3) * 90;
+                    const y = Math.floor(correctIdx / 3) * 90;
+                    cell.style.backgroundPosition = `-${x}px -${y}px`;
+                } else {
+                    const currentIdx = pieces[currentPos];
+                    const x = (currentIdx % 3) * 90;
+                    const y = Math.floor(currentIdx / 3) * 90;
+                    cell.style.backgroundPosition = `-${x}px -${y}px`;
+                }
+            });
+        }
+
+        // 4. เข้าสู่หน้าอวกาศ
         function goToPageThree() {
             const pageTwo = document.getElementById('page-two');
             pageTwo.style.opacity = '0';
@@ -597,10 +960,12 @@
 
             setTimeout(() => {
                 pageTwo.classList.add('hidden');
-
                 const pageThree = document.getElementById('page-three');
                 pageThree.style.opacity = '1';
                 pageThree.style.pointerEvents = 'auto';
+
+                // โชว์ปุ่มจดหมายลับเมื่อถึงหน้าอวกาศ
+                document.getElementById('capsule-btn').classList.add('visible');
 
                 startLoveCounter();
                 initGalaxyRenderer();
@@ -624,11 +989,11 @@
                     document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
                 }
             }
-
             updateTimer();
             setInterval(updateTimer, 1000);
         }
 
+        // ระบบ 3D อวกาศกึ่งฟิสิกส์แคนวาส
         function initGalaxyRenderer() {
             const canvas = document.getElementById('galaxyCanvas');
             const ctx = canvas.getContext('2d');
@@ -641,9 +1006,24 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            // 1. สร้างดาวเบื้องหลังแบบปกติ (100 ดวง)
+            // ตรวจสอบธีม Day & Night สำหรับกาแล็กซี (ฟีเจอร์ที่ 3)
+            const isDayMode = checkDayNightMode();
+            
+            // ตั้งค่าสีฝุ่นดาวตกแต่งตามโหมดเวลาจริง
+            let dustColors = [];
+            if (isDayMode) {
+                // Day Mode: ชมพูพาสเทล - ฟ้าพาสเทล ละมุนสดใส 🌸
+                dustColors = ['#ffccd5', '#d8f3dc', '#a9def9', '#e8cbf5'];
+                document.getElementById('theme-greeting').innerText = "Happy 1st Anniversary 🌸✨";
+            } else {
+                // Night Mode: น้ำเงินเข้ม - ม่วง โรแมนติกน่าค้นหา 🌌
+                dustColors = ['#ff85a1', '#e0e0ff', '#ec4899', '#7209b7'];
+                document.getElementById('theme-greeting').innerText = "Happy 1st Anniversary 🌌✨";
+            }
+
+            // สุ่มตำแหน่งดวงดาวในพื้นหลัง
             const bgStars = [];
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 120; i++) {
                 bgStars.push({
                     x: Math.random() * window.innerWidth,
                     y: Math.random() * window.innerHeight,
@@ -652,7 +1032,7 @@
                 });
             }
 
-            // 2. สร้างละอองเกลียวกาแล็กซี่ก้นหอย (1200 ดวง)
+            // โครงสร้างวงโคจรฝุ่นละอองกาแล็กซี่เกลียวคู่
             const galaxyDust = [];
             const dustCount = 1200;
             const spiralArms = 2;
@@ -667,17 +1047,17 @@
                     theta: theta,
                     speed: 0.003 + (Math.random() * 0.002), 
                     size: Math.random() * 1.5 + 0.3,
-                    color: i % 3 === 0 ? '#ff85a1' : (i % 3 === 1 ? '#e0e0ff' : '#ec4899'),
+                    color: dustColors[i % dustColors.length],
                     alpha: Math.random() * 0.8 + 0.2
                 });
             }
 
-            // 3. สร้างละอองหัวใจพ่นขึ้นด้านบน
+            // พาร์ติเคิลรูปหัวใจที่ลอยขึ้นมา
             const heartParticles = [];
             function createHeartParticle() {
                 heartParticles.push({
                     x: canvas.width / 2,
-                    y: canvas.height * 0.45, // ปรับพิกัดเริ่มต้นใจกลางตามสมดุลใหม่
+                    y: canvas.height * 0.45,
                     vx: (Math.random() - 0.5) * 1.5,
                     vy: -Math.random() * 2.5 - 1.0, 
                     size: Math.random() * 6 + 2,
@@ -686,7 +1066,7 @@
                 });
             }
 
-            // 4. สร้างอิลิเมนต์รูปภาพทั้ง 12 ใบให้หมุนรอบเกลียวกาแล็กซี่และหัวใจ
+            // ดาวเคราะห์หมุนรอบ
             const planets = [];
             systemContainer.innerHTML = ''; 
 
@@ -707,21 +1087,30 @@
                     modal.classList.add('show');
                 });
 
+                const isMobile = window.innerWidth < 600;
                 planets.push({
                     element: el,
                     angle: (index * (Math.PI * 2)) / 12,
-                    radiusX: 200,
-                    radiusY: 70,
+                    radiusX: isMobile ? 130 : 200,
+                    radiusY: isMobile ? 45 : 70,
                     speed: 0.003
                 });
             });
 
-            // วาดรูปหัวใจสไตล์พาร์ติเคิลเต้นตามจังหวะ
+            window.addEventListener('resize', () => {
+                const isMobile = window.innerWidth < 600;
+                planets.forEach(p => {
+                    p.radiusX = isMobile ? 130 : 200;
+                    p.radiusY = isMobile ? 45 : 70;
+                });
+            });
+
+            // หัวใจหลักใจกลางกาแล็กซี่เต้นเป็นจังหวะ
             function drawBeatingHeart(cx, cy, scale, t) {
                 ctx.save();
                 ctx.shadowBlur = 20;
-                ctx.shadowColor = "#ff4d6d";
-                ctx.fillStyle = "rgba(255, 77, 109, 0.85)";
+                ctx.shadowColor = isDayMode ? "#ffccd5" : "#ff4d6d";
+                ctx.fillStyle = isDayMode ? "rgba(255, 117, 140, 0.85)" : "rgba(255, 77, 109, 0.85)";
                 ctx.beginPath();
                 
                 const beat = 1 + Math.sin(t * 0.08) * 0.05;
@@ -745,26 +1134,29 @@
                 ctx.restore();
             }
 
+            
+            // ลูปหลักอนิเมชันวาดหน้าอวกาศ
             let animationTime = 0;
 
             function animate() {
                 animationTime++;
 
-                ctx.fillStyle = '#050510';
+                // สีของสกินกลางวัน / กลางคืน (ฟีเจอร์ที่ 3)
+                ctx.fillStyle = isDayMode ? '#0a0d24' : '#050510';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 const centerX = canvas.width / 2;
-                const centerY = canvas.height * 0.45; // ขยับระนาบหลักขึ้นด้านบนเล็กน้อยเพื่อหนีกล่องเวลาด้านล่าง
+                const centerY = canvas.height * 0.45; 
 
-                // --- 1. วาดดาวเบื้องหลัง ---
-                ctx.fillStyle = '#ffffff';
+                // 1. วาดระยิบระยับดาวพื้นหลัง
+                ctx.fillStyle = isDayMode ? '#fffbfa' : '#ffffff';
                 bgStars.forEach(star => {
                     ctx.globalAlpha = star.opacity * (0.5 + Math.sin(animationTime * 0.02 + star.x) * 0.5); 
                     ctx.fillRect(star.x, star.y, star.size, star.size);
                 });
                 ctx.globalAlpha = 1.0;
 
-                // --- 2. วาดฝุ่นเกลียวกาแล็กซี่ ---
+                // 2. วาดฝุ่นผงกาแล็กซี
                 galaxyDust.forEach(dust => {
                     dust.theta += dust.speed; 
                     
@@ -789,7 +1181,7 @@
                 });
                 ctx.globalAlpha = 1.0;
 
-                // --- 3. อัปเดตพาร์ติเคิลหัวใจลอยขึ้น ---
+                // 3. ปลดปล่อยใจพ่นลอยขึ้นมา
                 if (Math.random() < 0.6) {
                     createHeartParticle();
                 }
@@ -805,18 +1197,19 @@
                     } else {
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(255, 133, 161, ${p.alpha})`;
+                        ctx.fillStyle = isDayMode ? `rgba(255, 186, 198, ${p.alpha})` : `rgba(255, 133, 161, ${p.alpha})`;
                         ctx.shadowBlur = 8;
-                        ctx.shadowColor = "#ff4d6d";
+                        ctx.shadowColor = isDayMode ? "#ffb3c1" : "#ff4d6d";
                         ctx.fill();
                         ctx.shadowBlur = 0; 
                     }
                 }
 
-                // --- 4. วาดหัวใจเต้นขยับจังหวะ (ขยับความสูงให้ลอยอยู่เหนือเกลียวกาแล็กซี) ---
-                drawBeatingHeart(centerX, centerY - 130, 4.2, animationTime);
+                // 4. วาดใจหลวงขนาดใหญ่ตรงกลาง
+                const isMobile = window.innerWidth < 600;
+                drawBeatingHeart(centerX, centerY - 130, isMobile ? 3.0 : 4.2, animationTime);
 
-                // --- 5. วาดและหมุนกลุ่มรูปภาพทั้ง 12 ใบ ---
+                // 5. โคจรภาพดาวเคราะห์รอบหัวใจ
                 planets.forEach(planet => {
                     planet.angle += planet.speed;
 
@@ -829,7 +1222,7 @@
                     const maxRadiusY = planet.radiusY;
                     const depthZ = (rawY + maxRadiusY) / (2 * maxRadiusY); 
 
-                    const sizeScale = 0.6 + (depthZ * 0.45);
+                    const sizeScale = (isMobile ? 0.5 : 0.6) + (depthZ * 0.45);
                     const brightness = 60 + Math.round(depthZ * 40);
                     const zIndexVal = Math.round(depthZ * 100);
 
@@ -845,6 +1238,32 @@
             }
 
             animate();
+        }
+
+
+        // ระบบจดหมายลับ (Time Capsule - ฟีเจอร์ที่ 2)
+        function openCapsule() {
+            const letterModal = document.getElementById('letter-modal');
+            letterModal.classList.add('show');
+        }
+
+        function closeCapsule() {
+            const letterModal = document.getElementById('letter-modal');
+            letterModal.classList.remove('show');
+        }
+
+        // แตะจิ้มสุ่มคูปองใหม่
+        function rollCoupon() {
+            const rewardEl = document.getElementById('coupon-reward');
+            // ทำอนิเมชั่นสุ่มกระตุกสั่นน่ารักๆ
+            rewardEl.style.transform = "scale(0.85)";
+            rewardEl.style.transition = "transform 0.1s";
+            
+            setTimeout(() => {
+                const randomCoupon = COUPONS[Math.floor(Math.random() * COUPONS.length)];
+                rewardEl.innerText = randomCoupon;
+                rewardEl.style.transform = "scale(1)";
+            }, 100);
         }
 
         function closeModal() {
