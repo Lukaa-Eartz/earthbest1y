@@ -734,7 +734,7 @@
             
             <div class="scratch-card-area">
                 <!-- รูปการ์ตูนที่ซ่อนอยู่ด้านหลังแผ่นขูด -->
-                <img src="https://img.freepik.com/free-vector/cute-bears-couple-holding-heart-box-cartoon-vector-icon-illustration-animal-nature-isolated_138676-5011.jpg" class="scratch-bg-image">
+                <img src="https://criminal-azure-mtfud0gg.edgeone.dev/S__16506884.jpg" class="scratch-bg-image">
                 <!-- แผ่นแคนวาสสีเงินสำหรับขูดออก -->
                 <canvas id="scratch-canvas" width="260" height="260"></canvas>
             </div>
@@ -939,29 +939,30 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // เพิ่มข้อความน่ารักๆ บนการ์ดขูดก่อนเริ่มขูด
-            ctx.font = 'bold 16px Anuphan, sans-serif';
-            ctx.fillStyle = '#ff6584';
+            ctx.font = 'bold 13px Anuphan, sans-serif'; // ปรับลดขนาดเหลือ 13px เพื่อให้พอดีกับหน้าจอมือถือ
+            ctx.fillStyle = '#e91e63';
             ctx.textAlign = 'center';
-            ctx.fillText('ขูดตรงนี้เยยยย ✨', canvas.width / 2, canvas.height / 2);
+            ctx.textBaseline = 'middle'; // จัดให้อยู่กึ่งกลางแนวตั้งเป๊ะๆ
+            ctx.fillText('ใช้นิ้วขูดตรงนี้เยยยย ✨', canvas.width / 2, canvas.height / 2);
 
-            function scratch(e) {
-                if (!isDrawing) return;
-                
-                const rect = canvas.getBoundingClientRect();
-                // ตรวจสอบว่าเป็น Touch Event หรือ Mouse Event
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
+        function scratch(e) {
+            if (!isDrawing || scratchFinished) return;
 
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, 25, 0, Math.PI * 2); // ขนาดของหัวยางลบขูด
-                ctx.fill();
+            const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-                checkScratchPercentage();
-            }
+    // คำนวณ Scale เพื่อไม่ให้ตำแหน่งนิ้วที่ขูดเยื้องเวลารันบนมือถือ
+    const x = (clientX - rect.left) * (canvas.width / rect.width);
+    const y = (clientY - rect.top) * (canvas.height / rect.height);
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 25, 0, Math.PI * 2);
+    ctx.fill();
+
+    checkScratchPercentage();
+}
 
             // ฟังก์ชันคำนวณพื้นที่การขูด
             function checkScratchPercentage() {
