@@ -121,8 +121,8 @@
             box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
         }
 
-        /* --- หน้าที่ 2: หน้าการ์ดขูดการ์ตูน (NEW!) --- */
-        #page-scratch {
+        /* --- หน้าป๊อปอัปซองจดหมายรัก (แสดงหลังปลดล็อก ก่อนไปจิ๊กซอว์) --- */
+        #page-envelope {
             position: fixed;
             top: 0;
             left: 0;
@@ -130,66 +130,53 @@
             height: 100%;
             background: radial-gradient(circle, #2d122b 0%, #050510 100%);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9;
             opacity: 0;
             pointer-events: none;
             transition: opacity 1.2s ease;
-            padding: 20px;
         }
 
-        .scratch-container {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(236, 72, 153, 0.3);
-            padding: 25px;
-            border-radius: 20px;
+        .envelope-popup-overlay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 5, 16, 0.4);
+        }
+
+        .envelope-wrapper {
             text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.15);
-            max-width: 360px;
-            width: 100%;
+            cursor: pointer;
+            animation: envelopeBounce 2s infinite ease-in-out;
         }
 
-        .scratch-container h2 {
-            font-size: 18px;
+        .envelope-icon {
+            font-size: 80px;
+            filter: drop-shadow(0 0 20px rgba(255, 133, 161, 0.6));
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover .envelope-icon {
+            transform: scale(1.1);
+        }
+
+        .envelope-text {
+            margin-top: 15px;
+            font-size: 16px;
             color: #ff85a1;
-            margin-bottom: 8px;
-            text-shadow: 0 0 8px rgba(255, 133, 161, 0.3);
+            text-shadow: 0 0 8px rgba(255, 133, 161, 0.5);
+            font-weight: bold;
         }
 
-        .scratch-card-area {
-            position: relative;
-            width: 260px;
-            height: 260px;
-            margin: 15px auto;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            background: #fff; /* พื้นหลังของรูปการ์ตูนซ่อนอยู่ด้านล่าง */
+        @keyframes envelopeBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
-        .scratch-bg-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        #scratch-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
-            z-index: 2;
-            touch-action: none;
-        }
-
-        /* --- หน้าที่ 3: หน้ามินิเกมจิ๊กซอว์ --- */
+        /* --- หน้าที่ 2: หน้ามินิเกมจิ๊กซอว์ --- */
         #page-two {
             position: fixed;
             top: 0;
@@ -280,7 +267,7 @@
             background: rgba(255, 133, 161, 0.4);
         }
 
-        /* --- ฟีเจอร์ที่ 4: กล่องผลคะแนนมินิเกมจิ๊กซอว์ --- */
+        /* --- กล่องผลคะแนนมินิเกมจิ๊กซอว์ --- */
         #score-board {
             margin-top: 15px;
             padding: 15px;
@@ -306,7 +293,7 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* --- หน้าที่ 4: ห้วงอวกาศกาแล็กซี --- */
+        /* --- หน้าที่ 3: ห้วงอวกาศกาแล็กซี --- */
         #page-three {
             position: relative;
             width: 100vw;
@@ -456,41 +443,7 @@
             padding-bottom: 12px;
         }
 
-        /* --- ฟีเจอร์ที่ 1: สไตล์กลุ่มดาวตกและการสุ่มเด้งข้อความบอกรัก --- */
-        .shooting-star {
-            position: absolute;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(-45deg, rgba(255,255,255,1), rgba(255,255,255,0));
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1));
-            z-index: 5;
-            cursor: pointer;
-            transform: rotate(-45deg);
-            pointer-events: auto;
-        }
-        .love-bubble {
-            position: fixed;
-            background: rgba(255, 133, 161, 0.9);
-            border: 1px solid #fff;
-            padding: 8px 15px;
-            border-radius: 15px;
-            color: white;
-            font-size: 13px;
-            font-weight: bold;
-            pointer-events: none;
-            z-index: 1000;
-            animation: bubbleFloatUp 2.5s ease-out forwards;
-            box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
-            white-space: nowrap;
-        }
-        @keyframes bubbleFloatUp {
-            0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
-            15% { transform: translate(-50%, -20px) scale(1); opacity: 1; }
-            90% { opacity: 0.9; }
-            100% { transform: translate(-50%, -100px) scale(0.8); opacity: 0; }
-        }
-
-        /* --- ฟีเจอร์ที่ 2: สไตล์จดหมายลับ (Time Capsule) และคูปอง --- */
+        /* --- สไตล์จดหมายลับ (Time Capsule) และคูปอง --- */
         #capsule-btn {
             position: fixed;
             bottom: 25px;
@@ -726,24 +679,17 @@
         </div>
     </div>
 
-    <!-- ================= หน้าที่ 2: หน้าการ์ดขูดการ์ตูน (NEW!) ================= -->
-    <div id="page-scratch">
-        <div class="scratch-container">
-            <h2>✨ การ์ดขูดนำโชค ✨</h2>
-            <p style="font-size: 13px; color: #cbd5e1; margin-top: 5px;">ลองใช้นิ้วหรือเมาส์ขูดเพื่อดูความน่ารักข้างในสิ! 🧸</p>
-            
-            <div class="scratch-card-area">
-                <!-- รูปการ์ตูนที่ซ่อนอยู่ด้านหลังแผ่นขูด -->
-                <img src="https://criminal-azure-mtfud0gg.edgeone.dev/S__16506884.jpg" class="scratch-bg-image">
-                <!-- แผ่นแคนวาสสีเงินสำหรับขูดออก -->
-                <canvas id="scratch-canvas" width="260" height="260"></canvas>
+    <!-- ================= หน้าป๊อปอัปซองจดหมายรัก ================= -->
+    <div id="page-envelope">
+        <div class="envelope-popup-overlay" onclick="openEnvelope()">
+            <div class="envelope-wrapper">
+                <div class="envelope-icon">💌</div>
+                <div class="envelope-text">คุณได้รับจดหมายรัก 1 ฉบับ<br>กดเพื่อเปิดดูสิคะ 💖</div>
             </div>
-
-            <button id="btn-next-from-scratch" class="btn-style hidden" style="margin-top: 10px;" onclick="goToPageTwo()">ไปต่อกันเลยยย 🧸</button>
         </div>
     </div>
 
-    <!-- ================= หน้าที่ 3: มินิเกมจิ๊กซอว์ ================= -->
+    <!-- ================= หน้าที่ 2: มินิเกมจิ๊กซอว์ ================= -->
     <div id="page-two">
         <div class="game-container">
             <h2>🧩 ทดสอบความใส่ใจ 🧩</h2>
@@ -772,7 +718,7 @@
         </div>
     </div>
 
-    <!-- ================= หน้าที่ 4: ห้วงอวกาศกาแล็กซี ================= -->
+    <!-- ================= หน้าที่ 3: ห้วงอวกาศกาแล็กซี ================= -->
     <div id="page-three">
         <canvas class="galaxy-canvas" id="galaxyCanvas"></canvas>
         <div class="galaxy-system" id="galaxySystem"></div>
@@ -808,7 +754,7 @@
         </div>
     </div>
 
-    <!-- ปุ่มจดหมายลับ (จะลอยมุมล่างซ้ายหน้า 4) -->
+    <!-- ปุ่มจดหมายลับ (จะลอยมุมล่างซ้ายหน้า 3) -->
     <button id="capsule-btn" onclick="openCapsule()">💌</button>
 
     <!-- ป๊อปอัปจดหมายลับ คลี่กระดาษ -->
@@ -857,8 +803,6 @@
             { id: "p12", src: "https://vocational-beige-ttwhy62d.edgeone.dev/22962F48-8694-49CD-AA6D-A90D6838524A.jpg", msg: "ไปคาเฟ่ด้วยกันครั้งแรก ชอบมากๆ ทะเลาะกับแกะด้วย 🤣" }
         ];
 
-
-        // รายการคูปองพิเศษสำหรับสุ่มในจดหมายลับ
         const COUPONS = [
             "คูปอง: ตามใจเบสท์สุดๆ 1 วันเต็ม 💖",
             "คูปอง: ป้อนหมูกระทะ/ชาบู ฟรี 1 มื้อใหญ่ 🐷",
@@ -868,22 +812,17 @@
             "คูปอง: แลกอ้อมกอดแน่นๆ 10 นาที",
         ];
 
-        // ตรวจเช็คว่าเป็น Day Mode หรือ Night Mode อิงจากเวลาจริงบนเครื่อง (ฟีเจอร์ที่ 3)
         function checkDayNightMode() {
             const currentHour = new Date().getHours();
-            // ช่วงกลางวัน: 06:00 น. ถึง 18:00 น. (6 โมงเช้า ถึง 6 โมงเย็น)
-            const isDayMode = (currentHour >= 6 && currentHour < 18);
-            return isDayMode;
+            return (currentHour >= 6 && currentHour < 18);
         }
 
-        // 1. พรีโหลดรูปภาพ
         const allImages = [PUZZLE_IMG, ...PLANETS_DATA.map(p => p.src)];
         allImages.forEach(src => {
             const img = new Image();
             img.src = src;
         });
 
-        // 2. ควบคุมเพลง
         let isPlaying = false;
         function toggleMusic() {
             const music = document.getElementById('bg-music');
@@ -898,7 +837,6 @@
             isPlaying = !isPlaying;
         }
 
-        // 3. ปลดล็อกและคำนวณสถิติจิ๊กซอว์ (ฟีเจอร์ที่ 4)
         let puzzleStartTime = 0;
         let puzzleEndTime = 0;
 
@@ -907,45 +845,49 @@
             if (userInput === CORRECT_DATE) {
                 const music = document.getElementById('bg-music');
                 const btn = document.getElementById('music-btn');
-                music.play().then(() => {
-                    isPlaying = true;
-                    btn.classList.add('playing');
-                }).catch(() => {});
+                
+                if (music) {
+                    music.play().then(() => {
+                        isPlaying = true;
+                        btn.classList.add('playing');
+                    }).catch(err => {
+                        console.log("Music play blocked or delayed, but moving to next page.");
+                    });
+                }
 
                 const pageOne = document.getElementById('page-one');
                 pageOne.style.opacity = '0';
+                pageOne.style.pointerEvents = 'none';
                 
                 setTimeout(() => {
                     pageOne.classList.add('hidden');
-                    const pageScratch = document.getElementById('page-scratch');
-                    pageScratch.style.opacity = '1';
-                    pageScratch.style.pointerEvents = 'auto';
-                    
-                    initScratchCard(); // เรียกใช้ระบบการ์ดขูด
+                    const pageEnvelope = document.getElementById('page-envelope');
+                    pageEnvelope.style.opacity = '1';
+                    pageEnvelope.style.pointerEvents = 'auto';
                 }, 1200);
             } else {
                 alert("❌ ง่า รหัสผ่านไม่ถูกต้อง ลืมวันใช่ไหมไอ้อ้วน!! 🥺");
             }
         }
 
-        // ย้ายสลับไปหน้ามินิเกมจิ๊กซอว์
-        function goToPageTwo() {
-            const pageScratch = document.getElementById('page-scratch');
-            pageScratch.style.opacity = '0';
-            pageScratch.style.pointerEvents = 'none';
+        // เมื่อเปิดซองจดหมายรัก ให้ข้ามเข้ามินิเกมจิ๊กซอว์ทันที
+        function openEnvelope() {
+            const pageEnvelope = document.getElementById('page-envelope');
+            pageEnvelope.style.opacity = '0';
+            pageEnvelope.style.pointerEvents = 'none';
 
             setTimeout(() => {
-                pageScratch.classList.add('hidden');
+                pageEnvelope.classList.add('hidden');
                 const pageTwo = document.getElementById('page-two');
                 pageTwo.style.opacity = '1';
                 pageTwo.style.pointerEvents = 'auto';
                 
-                puzzleStartTime = Date.now(); // เริ่มจับเวลาต่อจิ๊กซอว์
+                puzzleStartTime = Date.now(); 
                 initPuzzle(); 
-            }, 1200);
+            }, 500);
         }
 
-        // ระบบมินิเกมจิ๊กซอว์
+        // 系统มินิเกมจิ๊กซอว์
         let pieces = [];
         let selectedPiece = null;
         const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -1005,7 +947,6 @@
                     puzzleEndTime = Date.now();
                     const secondsUsed = Math.floor((puzzleEndTime - puzzleStartTime) / 1000);
                     
-                    // แสดงผลคะแนน สถิติความใส่ใจ (ฟีเจอร์ที่ 4)
                     let rank = "";
                     if (secondsUsed <= 15) {
                         rank = "แฟนดีเด่นอันดับหนึ่งของโลก 🥇 (เร็วปานสายฟ้า!)";
@@ -1035,6 +976,7 @@
             return pieces.every((val, index) => val === correctOrder[index]);
         }
 
+        // ดูตัวอย่างรูปภาพจิ๊กซอว์
         function showHint(show) {
             const cells = document.querySelectorAll('.puzzle-piece');
             cells.forEach((cell, currentPos) => {
@@ -1053,7 +995,7 @@
             });
         }
 
-        // 4. เข้าสู่หน้าอวกาศ
+        // เข้าสู่หน้าอวกาศกาแล็กซี
         function goToPageThree() {
             const pageTwo = document.getElementById('page-two');
             pageTwo.style.opacity = '0';
@@ -1065,7 +1007,6 @@
                 pageThree.style.opacity = '1';
                 pageThree.style.pointerEvents = 'auto';
 
-                // โชว์ปุ่มจดหมายลับเมื่อถึงหน้าอวกาศ
                 document.getElementById('capsule-btn').classList.add('visible');
 
                 startLoveCounter();
@@ -1094,7 +1035,7 @@
             setInterval(updateTimer, 1000);
         }
 
-        // ระบบ 3D อวกาศกึ่งฟิสิกส์แคนวาส
+        // ระบบ 3D อวกาศแคนวาสและดวงดาว
         function initGalaxyRenderer() {
             const canvas = document.getElementById('galaxyCanvas');
             const ctx = canvas.getContext('2d');
@@ -1107,22 +1048,16 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            // ตรวจสอบธีม Day & Night สำหรับกาแล็กซี (ฟีเจอร์ที่ 3)
             const isDayMode = checkDayNightMode();
-            
-            // ตั้งค่าสีฝุ่นดาวตกแต่งตามโหมดเวลาจริง
             let dustColors = [];
             if (isDayMode) {
-                // Day Mode: ชมพูพาสเทล - ฟ้าพาสเทล ละมุนสดใส 🌸
                 dustColors = ['#ffccd5', '#d8f3dc', '#a9def9', '#e8cbf5'];
                 document.getElementById('theme-greeting').innerText = "Happy 1st Anniversary 🌸✨";
             } else {
-                // Night Mode: น้ำเงินเข้ม - ม่วง โรแมนติกน่าค้นหา 🌌
                 dustColors = ['#ff85a1', '#e0e0ff', '#ec4899', '#7209b7'];
                 document.getElementById('theme-greeting').innerText = "Happy 1st Anniversary 🌌✨";
             }
 
-            // สุ่มตำแหน่งดวงดาวในพื้นหลัง
             const bgStars = [];
             for (let i = 0; i < 120; i++) {
                 bgStars.push({
@@ -1133,7 +1068,6 @@
                 });
             }
 
-            // โครงสร้างวงโคจรฝุ่นละอองกาแล็กซี่เกลียวคู่
             const galaxyDust = [];
             const dustCount = 1200;
             const spiralArms = 2;
@@ -1153,7 +1087,6 @@
                 });
             }
 
-            // พาร์ติเคิลรูปหัวใจที่ลอยขึ้นมา
             const heartParticles = [];
             function createHeartParticle() {
                 heartParticles.push({
@@ -1167,7 +1100,6 @@
                 });
             }
 
-            // ดาวเคราะห์หมุนรอบ
             const planets = [];
             systemContainer.innerHTML = ''; 
 
@@ -1206,7 +1138,6 @@
                 });
             });
 
-            // หัวใจหลักใจกลางกาแล็กซี่เต้นเป็นจังหวะ
             function drawBeatingHeart(cx, cy, scale, t) {
                 ctx.save();
                 ctx.shadowBlur = 20;
@@ -1235,21 +1166,17 @@
                 ctx.restore();
             }
 
-            
-            // ลูปหลักอนิเมชันวาดหน้าอวกาศ
             let animationTime = 0;
 
             function animate() {
                 animationTime++;
 
-                // สีของสกินกลางวัน / กลางคืน (ฟีเจอร์ที่ 3)
                 ctx.fillStyle = isDayMode ? '#0a0d24' : '#050510';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 const centerX = canvas.width / 2;
                 const centerY = canvas.height * 0.45; 
 
-                // 1. วาดระยิบระยับดาวพื้นหลัง
                 ctx.fillStyle = isDayMode ? '#fffbfa' : '#ffffff';
                 bgStars.forEach(star => {
                     ctx.globalAlpha = star.opacity * (0.5 + Math.sin(animationTime * 0.02 + star.x) * 0.5); 
@@ -1257,7 +1184,6 @@
                 });
                 ctx.globalAlpha = 1.0;
 
-                // 2. วาดฝุ่นผงกาแล็กซี
                 galaxyDust.forEach(dust => {
                     dust.theta += dust.speed; 
                     
@@ -1282,7 +1208,6 @@
                 });
                 ctx.globalAlpha = 1.0;
 
-                // 3. ปลดปล่อยใจพ่นลอยขึ้นมา
                 if (Math.random() < 0.6) {
                     createHeartParticle();
                 }
@@ -1306,11 +1231,9 @@
                     }
                 }
 
-                // 4. วาดใจหลวงขนาดใหญ่ตรงกลาง
                 const isMobile = window.innerWidth < 600;
                 drawBeatingHeart(centerX, centerY - 130, isMobile ? 3.0 : 4.2, animationTime);
 
-                // 5. โคจรภาพดาวเคราะห์รอบหัวใจ
                 planets.forEach(planet => {
                     planet.angle += planet.speed;
 
@@ -1341,8 +1264,6 @@
             animate();
         }
 
-
-        // ระบบจดหมายลับ (Time Capsule - ฟีเจอร์ที่ 2)
         function openCapsule() {
             const letterModal = document.getElementById('letter-modal');
             letterModal.classList.add('show');
@@ -1353,10 +1274,8 @@
             letterModal.classList.remove('show');
         }
 
-        // แตะจิ้มสุ่มคูปองใหม่
         function rollCoupon() {
             const rewardEl = document.getElementById('coupon-reward');
-            // ทำอนิเมชั่นสุ่มกระตุกสั่นน่ารักๆ
             rewardEl.style.transform = "scale(0.85)";
             rewardEl.style.transition = "transform 0.1s";
             
